@@ -11,7 +11,7 @@ import {Button, Input, ListItem} from 'react-native-elements';
 
 export const Auth = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [keywords, setKeywords] = useState();
+  const [keywords, setKeywords] = useState('');
 
   const institute = useStoreState(state => state.institute);
   const getInstitute = useStoreActions((actions: any) => actions.getInstitute);
@@ -29,12 +29,25 @@ export const Auth = (props: any) => {
     init();
   }, []);
 
+  const getFilteredStudents = () => {
+    const data = institute.students;
+
+    return keywords.length >= 3
+      ? data.filter((student: any) => {
+          return (
+            student.info.name.match(new RegExp(`^${keywords}`, 'gi')) ||
+            student.info.mobile.match(new RegExp(`^${keywords}`, 'gi'))
+          );
+        })
+      : data;
+  };
+
   const showStudents = () => {
     return (
       <View>
         <FlatList
           keyExtractor={(_, index) => index.toString()}
-          data={institute.students}
+          data={getFilteredStudents()}
           renderItem={({item}: any) => {
             const user = item.info;
 

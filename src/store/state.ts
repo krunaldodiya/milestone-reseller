@@ -47,4 +47,23 @@ export const store = createStore({
 
     actions.setInstitute(data.institute);
   }),
+
+  toggleSubscription: thunk(async (actions: any, payload: any) => {
+    const token = await AsyncStorage.getItem('token');
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    const {data} = await axios.post(
+      baseUrl + '/api/reseller/subscriptions/toggle',
+      payload,
+      {
+        headers,
+      },
+    );
+
+    actions.setInstitute(data.institute);
+  }),
 });

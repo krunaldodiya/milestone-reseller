@@ -1,11 +1,20 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
-import {useStoreState} from 'easy-peasy';
+import {useStoreState, useStoreActions} from 'easy-peasy';
 import {Button, ListItem} from 'react-native-elements';
 
 export const UserInfo = (props: any) => {
-  const {user} = props.navigation.state.params;
   const institute = useStoreState(state => state.institute);
+  const user = useStoreState(state => {
+    return state.institute.students.filter(
+      (student: any) =>
+        student.student_id === props.navigation.state.params.user.id,
+    )[0].info;
+  });
+
+  const toggleSubscription = useStoreActions(
+    (actions: any) => actions.toggleSubscription,
+  );
 
   const checkSubscription = (category_id: any) => {
     return !!user.subscriptions.filter((subscription: any) => {
@@ -60,9 +69,15 @@ export const UserInfo = (props: any) => {
                           textTransform: 'uppercase',
                         }}
                         title={isSubscribed ? 'unsubscribe' : 'subscribe'}
+                        onPress={async () => {
+                          await toggleSubscription({
+                            user_id: user.id,
+                            category_id: category.id,
+                            expires_at: category.expires_at,
+                          });
+                        }}
                       />
                     }
-                    onPress={() => null}
                   />
                 );
               })}
