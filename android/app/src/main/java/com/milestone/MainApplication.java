@@ -1,4 +1,4 @@
-package com.milestone;
+package reseller.milestone.alpesh;
 
 import android.app.Application;
 import android.content.Context;
