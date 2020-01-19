@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {useStoreState} from 'easy-peasy';
-import {Button} from 'react-native-elements';
+import {Button, ListItem} from 'react-native-elements';
 
 export const UserInfo = (props: any) => {
   const {user} = props.navigation.state.params;
@@ -37,54 +37,33 @@ export const UserInfo = (props: any) => {
               </Text>
             </View>
 
-            <View style={{padding: 5}}>
+            <View>
               {institute.categories.map((category: any) => {
                 const isSubscribed = checkSubscription(category.category_id);
 
                 return (
-                  <View
-                    style={{
-                      marginTop: 5,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
-                    key={category.id}>
-                    <View>
-                      <Text style={{color: 'black', fontSize: 16}}>
-                        {category.info.name}
-                      </Text>
-                    </View>
-
-                    <View>
-                      {isSubscribed ? (
-                        <Button
-                          buttonStyle={{
-                            backgroundColor: 'red',
-                            width: 100,
-                            height: 30,
-                          }}
-                          titleStyle={{
-                            fontSize: 12,
-                            textTransform: 'uppercase',
-                          }}
-                          title="unsubscribe"
-                        />
-                      ) : (
-                        <Button
-                          buttonStyle={{
-                            backgroundColor: 'green',
-                            width: 100,
-                            height: 30,
-                          }}
-                          titleStyle={{
-                            fontSize: 12,
-                            textTransform: 'uppercase',
-                          }}
-                          title="subscribe"
-                        />
-                      )}
-                    </View>
-                  </View>
+                  <ListItem
+                    key={category.id}
+                    leftAvatar={{source: {uri: category.info.image}}}
+                    title={category.info.name}
+                    subtitle={category.expires_at}
+                    bottomDivider
+                    rightElement={
+                      <Button
+                        buttonStyle={{
+                          backgroundColor: isSubscribed ? 'red' : 'green',
+                          width: 100,
+                          height: 30,
+                        }}
+                        titleStyle={{
+                          fontSize: 12,
+                          textTransform: 'uppercase',
+                        }}
+                        title={isSubscribed ? 'unsubscribe' : 'subscribe'}
+                      />
+                    }
+                    onPress={() => null}
+                  />
                 );
               })}
             </View>
