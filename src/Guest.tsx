@@ -33,7 +33,7 @@ export const Guest = (props: any) => {
 
   return (
     <Fragment>
-      <StatusBar backgroundColor="#0D62A2" barStyle="light-content" />
+      <StatusBar backgroundColor="#000333" barStyle="light-content" />
 
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
@@ -74,6 +74,8 @@ export const Guest = (props: any) => {
             <View style={styles.buttonContainer}>
               <Button
                 title="login"
+                titleStyle={{fontSize: 16, textTransform: 'uppercase'}}
+                buttonStyle={{backgroundColor: '#000332'}}
                 onPress={() => doSignIn()}
                 disabled={loading}
                 loading={loading}
@@ -89,7 +91,7 @@ export const Guest = (props: any) => {
 const styles = StyleSheet.create({
   top: {
     flex: 1,
-    backgroundColor: '#0D62A2',
+    backgroundColor: '#000333',
     justifyContent: 'center',
     alignItems: 'center',
   },
