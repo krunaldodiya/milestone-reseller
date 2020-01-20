@@ -1,20 +1,23 @@
-import React, {Fragment, useState} from 'react';
-import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
-import {useStoreState, useStoreActions} from 'easy-peasy';
-import {Button, ListItem} from 'react-native-elements';
+import {useStoreActions, useStoreState} from 'easy-peasy';
+import React, {Fragment} from 'react';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Button, Header, ListItem} from 'react-native-elements';
 
 export const UserInfo = (props: any) => {
   const institute = useStoreState(state => state.institute);
-  const user = useStoreState(state => {
-    return state.institute.students.filter(
-      (student: any) =>
-        student.student_id === props.navigation.state.params.user.id,
-    )[0].info;
+  const user_data = useStoreState(state => {
+    return state.institute.students.filter((student: any) => {
+      return student.student_id === props.navigation.state.params.user.id;
+    })[0];
   });
+
+  const user = user_data ? user_data.info : null;
 
   const toggleSubscription = useStoreActions(
     (actions: any) => actions.toggleSubscription,
   );
+
+  const removeUser = useStoreActions((actions: any) => actions.removeUser);
 
   const checkSubscription = (category_id: any) => {
     return !!user.subscriptions.filter((subscription: any) => {
@@ -22,26 +25,70 @@ export const UserInfo = (props: any) => {
     }).length;
   };
 
+  if (!user) {
+    return (
+      <View>
+        <Text>No such user</Text>
+      </View>
+    );
+  }
+
   return (
     <Fragment>
-      <StatusBar backgroundColor="#0D62A2" barStyle="light-content" />
-
       <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
-          <View style={{padding: 5}}>
-            <Text style={{fontSize: 18, marginBottom: 7}}>{user.name}</Text>
-            <Text style={{fontSize: 14, marginBottom: 0}}>{user.mobile}</Text>
-          </View>
+        <Header
+          style={{flex: 1}}
+          statusBarProps={{
+            barStyle: 'light-content',
+            translucent: true,
+            backgroundColor: '#003333',
+          }}
+          barStyle="light-content"
+          leftComponent={{
+            icon: 'arrow-back',
+            color: '#fff',
+            size: 22,
+            onPress: async () => {
+              props.navigation.pop();
+            },
+          }}
+          centerComponent={{
+            text: user.mobile,
+            style: {color: '#fff', fontSize: 22},
+          }}
+          rightComponent={{
+            text: 'delete',
+            style: {
+              color: '#fff',
+              fontSize: 14,
+              textTransform: 'uppercase',
+              fontWeight: 'bold',
+            },
+            onPress: async () => {
+              await removeUser({student_id: user.id});
+              props.navigation.pop();
+            },
+          }}
+          containerStyle={{backgroundColor: '#003333'}}
+        />
 
-          <View style={{marginTop: 10}}>
+        <View style={styles.container}>
+          {user.name ? (
+            <View style={{padding: 20}}>
+              <Text style={{fontSize: 18, fontWeight: '600'}}>
+                Name: {user.name}
+              </Text>
+            </View>
+          ) : null}
+
+          <View>
             <View
               style={{
-                padding: 5,
-                paddingBottom: 10,
+                padding: 20,
                 borderBottomWidth: 1,
                 borderBottomColor: '#bbb',
               }}>
-              <Text style={{fontSize: 18, textTransform: 'uppercase'}}>
+              <Text style={{fontSize: 16, textTransform: 'uppercase'}}>
                 Subscriptions
               </Text>
             </View>
@@ -93,6 +140,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 10,
   },
 });

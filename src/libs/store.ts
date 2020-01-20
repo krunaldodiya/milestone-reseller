@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {action, createStore, thunk} from 'easy-peasy';
-import {baseUrl} from '../libs/vars';
+import {baseUrl} from './vars';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const store = createStore({
@@ -58,6 +58,25 @@ export const store = createStore({
 
     const {data} = await axios.post(
       baseUrl + '/api/reseller/subscriptions/toggle',
+      payload,
+      {
+        headers,
+      },
+    );
+
+    actions.setInstitute(data.institute);
+  }),
+
+  removeUser: thunk(async (actions: any, payload: any) => {
+    const token = await AsyncStorage.getItem('token');
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    const {data} = await axios.post(
+      baseUrl + '/api/reseller/students/remove',
       payload,
       {
         headers,

@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {getStackNavigator} from './src/libs/routes';
-import {store} from './src/store/state';
+import {store} from './src/libs/store';
 
 const App = () => {
   const [initialScreen, setInitialScreen] = useState();

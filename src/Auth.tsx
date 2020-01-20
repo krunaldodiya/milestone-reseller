@@ -1,13 +1,15 @@
 import {useStoreActions, useStoreState} from 'easy-peasy';
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import {Button, Input, ListItem} from 'react-native-elements';
+import {Button, Header, Input, ListItem} from 'react-native-elements';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const Auth = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -79,40 +81,73 @@ export const Auth = (props: any) => {
   }
 
   return (
-    <View style={{flex: 1}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          margin: 5,
-        }}>
-        <View style={{flex: 1}}>
-          <Input
-            placeholder="Filter Students"
-            value={keywords}
-            onChangeText={(data: any) => setKeywords(data)}
-            autoCorrect={false}
-            autoCapitalize="none"
-            inputStyle={{padding: 0, fontSize: 14}}
-            underlineColorAndroid="transparent"
-            inputContainerStyle={{borderBottomWidth: 0}}
-            containerStyle={styles.input}
-          />
-        </View>
+    <Fragment>
+      <SafeAreaView style={{flex: 1}}>
+        <Header
+          style={{flex: 1}}
+          statusBarProps={{
+            barStyle: 'light-content',
+            translucent: true,
+            backgroundColor: '#003333',
+          }}
+          barStyle="light-content"
+          centerComponent={{
+            text: 'Milestone',
+            style: {color: '#fff', fontSize: 22},
+          }}
+          rightComponent={{
+            text: 'logout',
+            style: {
+              color: '#fff',
+              fontSize: 14,
+              textTransform: 'uppercase',
+              fontWeight: 'bold',
+            },
+            onPress: async () => {
+              AsyncStorage.removeItem('token');
+              props.navigation.replace('Guest');
+            },
+          }}
+          containerStyle={{backgroundColor: '#003333'}}
+        />
 
-        <View style={{marginLeft: 5}}>
-          <Button
-            title="Add Student"
-            titleStyle={{fontSize: 12, textTransform: 'uppercase'}}
-            onPress={() => props.navigation.push('AddStudent')}
-          />
-        </View>
-      </View>
+        <View style={{flex: 1, marginTop: 5}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              margin: 5,
+            }}>
+            <View style={{flex: 1}}>
+              <Input
+                placeholder="Search"
+                value={keywords}
+                onChangeText={(data: any) => setKeywords(data)}
+                autoCorrect={false}
+                autoCapitalize="none"
+                inputStyle={{padding: 0, fontSize: 14}}
+                underlineColorAndroid="transparent"
+                inputContainerStyle={{borderBottomWidth: 0}}
+                containerStyle={styles.input}
+              />
+            </View>
 
-      <View style={{flex: 1, marginTop: 10}}>
-        {institute.students.length ? showStudents() : noStudents()}
-      </View>
-    </View>
+            <View style={{marginLeft: 5}}>
+              <Button
+                buttonStyle={{backgroundColor: '#003333'}}
+                title="Add Student"
+                titleStyle={{fontSize: 14, textTransform: 'uppercase'}}
+                onPress={() => props.navigation.push('AddStudent')}
+              />
+            </View>
+          </View>
+
+          <View style={{flex: 1, marginTop: 10}}>
+            {institute.students.length ? showStudents() : noStudents()}
+          </View>
+        </View>
+      </SafeAreaView>
+    </Fragment>
   );
 };
 
