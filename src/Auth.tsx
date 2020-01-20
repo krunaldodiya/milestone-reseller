@@ -84,7 +84,6 @@ export const Auth = (props: any) => {
     <Fragment>
       <SafeAreaView style={{flex: 1}}>
         <Header
-          style={{flex: 1}}
           statusBarProps={{
             barStyle: 'light-content',
             translucent: true,
@@ -92,8 +91,14 @@ export const Auth = (props: any) => {
           }}
           barStyle="light-content"
           centerComponent={{
+            numberOfLines: 2,
             text: institute.name,
-            style: {color: '#fff', fontSize: 22},
+            style: {
+              color: '#fff',
+              fontSize: 20,
+              textAlign: 'center',
+              textAlignVertical: 'center',
+            },
           }}
           rightComponent={{
             text: 'logout',
@@ -108,7 +113,10 @@ export const Auth = (props: any) => {
               props.navigation.replace('Guest');
             },
           }}
-          containerStyle={{backgroundColor: '#003333'}}
+          containerStyle={{
+            backgroundColor: '#003333',
+            justifyContent: 'center',
+          }}
         />
 
         <View style={{flex: 1, marginTop: 5}}>
