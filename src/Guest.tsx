@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import React, {Fragment, useState} from 'react';
-import {Alert, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {Alert, StatusBar, StyleSheet, View, Image} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {baseUrl} from './libs/vars';
@@ -33,12 +33,17 @@ export const Guest = (props: any) => {
 
   return (
     <Fragment>
-      <StatusBar backgroundColor="#000333" barStyle="light-content" />
+      <StatusBar backgroundColor="#003333" barStyle="light-content" />
 
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <View style={styles.top}>
-            <Text style={styles.topText}>Milestone</Text>
+            <Image
+              style={{flex: 1}}
+              source={require('../src/images/logo.png')}
+              resizeMode="contain"
+              resizeMethod="auto"
+            />
           </View>
 
           <View style={styles.bottom}>
@@ -75,7 +80,7 @@ export const Guest = (props: any) => {
               <Button
                 title="login"
                 titleStyle={{fontSize: 16, textTransform: 'uppercase'}}
-                buttonStyle={{backgroundColor: '#000332'}}
+                buttonStyle={{backgroundColor: '#003333'}}
                 onPress={() => doSignIn()}
                 disabled={loading}
                 loading={loading}
@@ -91,7 +96,7 @@ export const Guest = (props: any) => {
 const styles = StyleSheet.create({
   top: {
     flex: 1,
-    backgroundColor: '#000333',
+    backgroundColor: '#003333',
     justifyContent: 'center',
     alignItems: 'center',
   },

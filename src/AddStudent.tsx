@@ -1,13 +1,12 @@
 import {useStoreActions} from 'easy-peasy';
 import React, {Fragment, useState} from 'react';
 import {Alert, StatusBar, StyleSheet, View} from 'react-native';
-import {Button, Input} from 'react-native-elements';
+import {Button, Input, Header} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const AddStudent = (props: any) => {
   const [loading, setLoading] = useState(false);
   const [mobile, setMobile] = useState();
-  const [error, setError] = useState();
 
   const addStudent = useStoreActions((actions: any) => actions.addStudent);
 
@@ -20,14 +19,34 @@ export const AddStudent = (props: any) => {
       props.navigation.pop();
     } catch (e) {
       setLoading(false);
-      setError(e.response.data.message);
-      Alert.alert('Oops', error);
+      Alert.alert('Oops', e.response.data.message);
     }
   };
 
   return (
     <Fragment>
-      <StatusBar backgroundColor="#0D62A2" barStyle="light-content" />
+      <Header
+        style={{flex: 1}}
+        statusBarProps={{
+          barStyle: 'light-content',
+          translucent: true,
+          backgroundColor: '#003333',
+        }}
+        barStyle="light-content"
+        leftComponent={{
+          icon: 'arrow-back',
+          color: '#fff',
+          size: 22,
+          onPress: async () => {
+            props.navigation.pop();
+          },
+        }}
+        centerComponent={{
+          text: 'Add Student',
+          style: {color: '#fff', fontSize: 22},
+        }}
+        containerStyle={{backgroundColor: '#003333'}}
+      />
 
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
@@ -49,6 +68,7 @@ export const AddStudent = (props: any) => {
 
           <View style={styles.buttonContainer}>
             <Button
+              buttonStyle={{backgroundColor: '#003333'}}
               title="ADD"
               onPress={() => addStudentHandler()}
               disabled={loading}
@@ -62,27 +82,16 @@ export const AddStudent = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-  top: {
-    flex: 1,
-    backgroundColor: '#0D62A2',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  topText: {color: 'white', textAlignVertical: 'center', fontSize: 36},
-  bottom: {flex: 1, justifyContent: 'center'},
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
   },
-  inputContainer: {},
   input: {
     borderWidth: 1,
     borderColor: '#bbb',
     borderRadius: 5,
     paddingLeft: 10,
     marginHorizontal: 10,
-    marginBottom: 10,
   },
+  inputContainer: {},
   buttonContainer: {margin: 20},
 });

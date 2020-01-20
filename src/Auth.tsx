@@ -92,7 +92,7 @@ export const Auth = (props: any) => {
           }}
           barStyle="light-content"
           centerComponent={{
-            text: 'Milestone',
+            text: institute.name,
             style: {color: '#fff', fontSize: 22},
           }}
           rightComponent={{
