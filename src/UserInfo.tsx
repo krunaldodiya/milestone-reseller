@@ -1,9 +1,11 @@
 import {useStoreActions, useStoreState} from 'easy-peasy';
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {Button, Header, ListItem} from 'react-native-elements';
+import {baseUrl} from './libs/vars';
 
 export const UserInfo = (props: any) => {
+  const [loading, setLoading] = useState(null);
   const institute = useStoreState(state => state.institute);
   const user_data = useStoreState(state => {
     return state.institute.students.filter((student: any) => {
@@ -94,15 +96,19 @@ export const UserInfo = (props: any) => {
             </View>
 
             <View>
-              {institute.categories.map((category: any) => {
-                const isSubscribed = checkSubscription(category.category_id);
+              {institute.categories.map((institute_category: any) => {
+                const isSubscribed = checkSubscription(
+                  institute_category.category_id,
+                );
+
+                const image = `${baseUrl}/storage/${institute_category.info.image}`;
 
                 return (
                   <ListItem
-                    key={category.id}
-                    leftAvatar={{source: {uri: category.info.image}}}
-                    title={category.info.name}
-                    subtitle={category.expires_at}
+                    key={institute_category.id}
+                    leftAvatar={{source: {uri: image}}}
+                    title={institute_category.info.name}
+                    subtitle={institute_category.expires_at}
                     bottomDivider
                     rightElement={
                       <Button
@@ -115,13 +121,22 @@ export const UserInfo = (props: any) => {
                           fontSize: 12,
                           textTransform: 'uppercase',
                         }}
+                        disabled={loading !== null}
+                        loading={loading === institute_category.id}
                         title={isSubscribed ? 'unsubscribe' : 'subscribe'}
                         onPress={async () => {
-                          await toggleSubscription({
-                            user_id: user.id,
-                            category_id: category.id,
-                            expires_at: category.expires_at,
-                          });
+                          setLoading(institute_category.id);
+                          try {
+                            await toggleSubscription({
+                              user_id: user.id,
+                              category_id: institute_category.category_id,
+                              expires_at: institute_category.expires_at,
+                            });
+                            setLoading(null);
+                          } catch (error) {
+                            setLoading(null);
+                            console.log(error);
+                          }
                         }}
                       />
                     }

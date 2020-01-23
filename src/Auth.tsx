@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import {useStoreActions, useStoreState} from 'easy-peasy';
 import React, {Fragment, useEffect, useState} from 'react';
 import {
@@ -9,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import {Button, Header, Input, ListItem} from 'react-native-elements';
-import AsyncStorage from '@react-native-community/async-storage';
+import {baseUrl} from './libs/vars';
 
 export const Auth = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -52,10 +53,11 @@ export const Auth = (props: any) => {
           data={getFilteredStudents()}
           renderItem={({item}: any) => {
             const user = item.info;
+            const image = `${baseUrl}/storage/${user.avatar}`;
 
             return (
               <ListItem
-                leftAvatar={{source: {uri: user.avatar}}}
+                leftAvatar={{source: {uri: image}}}
                 title={user.name}
                 subtitle={user.mobile}
                 bottomDivider

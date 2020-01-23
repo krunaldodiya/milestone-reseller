@@ -1,0 +1,5 @@
+package id [reseller.milestone.alpesh]
+replace folder name [java/reseller/milestone/nitesh]
+api url
+app icon
+versionCode and versionName in android/app/build.gradle
