@@ -11,6 +11,7 @@ export const store = createStore({
     const token = await AsyncStorage.getItem('token');
 
     const headers = {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     };
@@ -33,6 +34,7 @@ export const store = createStore({
     const token = await AsyncStorage.getItem('token');
 
     const headers = {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     };
@@ -52,6 +54,7 @@ export const store = createStore({
     const token = await AsyncStorage.getItem('token');
 
     const headers = {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     };
@@ -71,6 +74,7 @@ export const store = createStore({
     const token = await AsyncStorage.getItem('token');
 
     const headers = {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     };

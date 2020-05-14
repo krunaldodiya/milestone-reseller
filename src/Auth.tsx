@@ -30,7 +30,7 @@ export const Auth = (props: any) => {
     };
 
     init();
-  }, []);
+  }, [getInstitute]);
 
   const getFilteredStudents = () => {
     const data = institute.students;

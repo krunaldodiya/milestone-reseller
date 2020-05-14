@@ -1,7 +1,7 @@
 import {useStoreActions} from 'easy-peasy';
 import React, {Fragment, useState} from 'react';
-import {Alert, StatusBar, StyleSheet, View} from 'react-native';
-import {Button, Input, Header} from 'react-native-elements';
+import {Alert, StyleSheet, View} from 'react-native';
+import {Button, Header, Input} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const AddStudent = (props: any) => {

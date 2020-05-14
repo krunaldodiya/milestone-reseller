@@ -1,6 +1,6 @@
 import {useStoreActions, useStoreState} from 'easy-peasy';
 import React, {Fragment, useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View, FlatList} from 'react-native';
 import {Button, Header, ListItem} from 'react-native-elements';
 import {baseUrl} from './libs/vars';
 
@@ -96,53 +96,56 @@ export const UserInfo = (props: any) => {
             </View>
 
             <View>
-              {institute.categories.map((institute_category: any) => {
-                const isSubscribed = checkSubscription(
-                  institute_category.category_id,
-                );
+              <FlatList
+                style={{marginBottom: 50}}
+                keyExtractor={(_, index) => index.toString()}
+                data={institute.categories}
+                renderItem={({item}: any) => {
+                  const isSubscribed = checkSubscription(item.category_id);
 
-                const image = `${baseUrl}/storage/${institute_category.info.image}`;
+                  const image = `${baseUrl}/storage/${item.info.image}`;
 
-                return (
-                  <ListItem
-                    key={institute_category.id}
-                    leftAvatar={{source: {uri: image}}}
-                    title={institute_category.info.name}
-                    subtitle={institute_category.expires_at}
-                    bottomDivider
-                    rightElement={
-                      <Button
-                        buttonStyle={{
-                          backgroundColor: isSubscribed ? 'red' : 'green',
-                          width: 100,
-                          height: 30,
-                        }}
-                        titleStyle={{
-                          fontSize: 12,
-                          textTransform: 'uppercase',
-                        }}
-                        disabled={loading !== null}
-                        loading={loading === institute_category.id}
-                        title={isSubscribed ? 'unsubscribe' : 'subscribe'}
-                        onPress={async () => {
-                          setLoading(institute_category.id);
-                          try {
-                            await toggleSubscription({
-                              user_id: user.id,
-                              category_id: institute_category.category_id,
-                              expires_at: institute_category.expires_at,
-                            });
-                            setLoading(null);
-                          } catch (error) {
-                            setLoading(null);
-                            console.log(error);
-                          }
-                        }}
-                      />
-                    }
-                  />
-                );
-              })}
+                  return (
+                    <ListItem
+                      key={item.id}
+                      leftAvatar={{source: {uri: image}}}
+                      title={item.info.name}
+                      subtitle={item.expires_at}
+                      bottomDivider
+                      rightElement={
+                        <Button
+                          buttonStyle={{
+                            backgroundColor: isSubscribed ? 'red' : 'green',
+                            width: 100,
+                            height: 30,
+                          }}
+                          titleStyle={{
+                            fontSize: 12,
+                            textTransform: 'uppercase',
+                          }}
+                          disabled={loading !== null}
+                          loading={loading === item.id}
+                          title={isSubscribed ? 'unsubscribe' : 'subscribe'}
+                          onPress={async () => {
+                            setLoading(item.id);
+                            try {
+                              await toggleSubscription({
+                                user_id: user.id,
+                                category_id: item.category_id,
+                                expires_at: item.expires_at,
+                              });
+                              setLoading(null);
+                            } catch (error) {
+                              setLoading(null);
+                              console.log(error);
+                            }
+                          }}
+                        />
+                      }
+                    />
+                  );
+                }}
+              />
             </View>
           </View>
         </View>
