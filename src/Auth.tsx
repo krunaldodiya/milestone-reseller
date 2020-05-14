@@ -38,8 +38,10 @@ export const Auth = (props: any) => {
     return keywords.length >= 3
       ? data.filter((student: any) => {
           return (
-            student.info.name.match(new RegExp(`^${keywords}`, 'gi')) ||
-            student.info.mobile.match(new RegExp(`^${keywords}`, 'gi'))
+            (student.info.name &&
+              student.info.name.match(new RegExp(`^${keywords}`, 'gi'))) ||
+            (student.info.mobile &&
+              student.info.mobile.match(new RegExp(`^${keywords}`, 'gi')))
           );
         })
       : data;
